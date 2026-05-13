@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GREEN API TEST</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="left">
+
+        <input type="text" id="idInstance" placeholder="idInstance">
+
+        <input type="text" id="apiToken" placeholder="ApiTokenInstance">
+
+        <button onclick="getSettings()">
+            getSettings
+        </button>
+
+        <button onclick="getStateInstance()">
+            getStateInstance
+        </button>
+
+        <input type="text" id="chatId" placeholder="77771234567">
+
+        <textarea id="message" placeholder="Hello world"></textarea>
+
+        <button onclick="sendMessage()">
+            sendMessage
+        </button>
+
+        <input type="text" id="fileUrl"
+               placeholder="https://site.com/file.jpg">
+
+        <button onclick="sendFileByUrl()">
+            sendFileByUrl
+        </button>
+
+    </div>
+
+    <div class="right">
+
+        <textarea id="response" readonly></textarea>
+
+    </div>
+
+</div>
+
+<script>
+
+function getBaseData() {
+
+    return {
+        idInstance: document.getElementById("idInstance").value,
+        apiTokenInstance: document.getElementById("apiToken").value
+    }
+}
+
+
+async function getSettings() {
+
+    const response = await fetch("/getSettings", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify(getBaseData())
+    })
+
+    const data = await response.json()
+
+    document.getElementById("response").value =
+        JSON.stringify(data, null, 2)
+}
+
+
+async function getStateInstance() {
+
+    const response = await fetch("/getStateInstance", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify(getBaseData())
+    })
+
+    const data = await response.json()
+
+    document.getElementById("response").value =
+        JSON.stringify(data, null, 2)
+}
+
+
+async function sendMessage() {
+
+    const payload = {
+
+        ...getBaseData(),
+
+        chatId: document.getElementById("chatId").value,
+
+        message: document.getElementById("message").value
+    }
+
+    const response = await fetch("/sendMessage", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify(payload)
+    })
+
+    const data = await response.json()
+
+    document.getElementById("response").value =
+        JSON.stringify(data, null, 2)
+}
+
+
+async function sendFileByUrl() {
+
+    const payload = {
+
+        ...getBaseData(),
+
+        chatId: document.getElementById("chatId").value,
+
+        fileUrl: document.getElementById("fileUrl").value
+    }
+
+    const response = await fetch("/sendFileByUrl", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify(payload)
+    })
+
+    const data = await response.json()
+
+    document.getElementById("response").value =
+        JSON.stringify(data, null, 2)
+}
+
+</script>
+
+</body>
+</html>
